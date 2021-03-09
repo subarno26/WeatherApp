@@ -48,9 +48,25 @@ class DownloadFragment : DaggerFragment() {
         downloadViewModel.downloadFile().observe(viewLifecycleOwner, { workinfo ->
             if (workinfo != null) {
                 Log.d(TAG, "setObservers: ${workinfo.state.name}")
-                if (workinfo.state.isFinished){
-                    Toast.makeText(context, getString(R.string.download_completed), Toast.LENGTH_SHORT).show()
+                when (workinfo.state.name) {
+                    "ENQUEUED" -> {
+                        Toast.makeText(context, "Enqueued, waiting for wifi", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    "RUNNING" -> {
+                        Toast.makeText(context, "Download started", Toast.LENGTH_SHORT).show()
+                    }
+                    "SUCCEEDED" -> {
+                        Toast.makeText(context, getString(R.string.download_completed), Toast.LENGTH_SHORT).show()
+                    }
                 }
+//                if (workinfo.state.isFinished) {
+//                    Toast.makeText(
+//                        context,
+//                        getString(R.string.download_completed),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
             }
         })
     }
