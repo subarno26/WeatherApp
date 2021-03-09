@@ -1,5 +1,25 @@
 <resources>
-    <string name="app_name">GrowthPOC</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Weather App</string>
+    <string name="degree">°C</string>
+    <string name="pressure">\u0020hPa</string>
+    <string name="humidity">\u0020%</string>
+    <string name="visibility">\u0020m</string>
+    <string name="wind">\u0020m/s</string>
+    <string name="weather_icon">weather icon</string>
+    <string name="humidity_icon">humidity icon</string>
+    <string name="pressure_icon">pressure icon</string>
+    <string name="wind_icon">wind icon</string>
+    <string name="visibility_icon">visibility icon</string>
+    <string name="nasa_weather_forecast_pdf">NASA Weather Forecast PDF</string>
+    <string name="download_pdf">download pdf</string>
+    <string name="next_button">next button</string>
+    <string name="search_by_city_name">Search by city name</string>
+    <string name="use_my_location">Use my location</string>
+    <string name="search_button">search button</string>
+    <string name="location_button">location button</string>
+    <string name="wrong_city_name">Wrong city name, fetching based on current location.</string>
+    <string name="no_internet">Internet connection unavailable.</string>
+    <string name="download_completed">Download Completed</string>
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_denied">Permission denied</string>
 </resources>

@@ -1,6 +1,6 @@
 package com.example.growthpoc.network
 
-import com.example.growthpoc.models.WeatherModel
+import com.example.growthpoc.models.response.WeatherModel
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

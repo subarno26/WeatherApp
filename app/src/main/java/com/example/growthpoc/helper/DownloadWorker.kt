@@ -1,4 +1,5 @@
-package com.example.growthpoc
+
+package com.example.growthpoc.helper
 
 import android.app.DownloadManager
 import android.content.Context
@@ -11,21 +12,20 @@ import com.example.growthpoc.utils.Constants
 class DownloadWorker(context: Context, workerParams: WorkerParameters)
     : Worker(context, workerParams)
 {
-    private val TAG = "DownloadWorker"
     override fun doWork(): Result {
-        downloadVideoFile()
+        downloadFile()
         return Result.success()
     }
 
-    private fun downloadVideoFile() {
-        var request = DownloadManager.Request(
-            Uri.parse("https://www.videezy.com/download/40410?download_auth_hash=9dd4321b&pro=false"))
+    private fun downloadFile() {
+        val request = DownloadManager.Request(
+            Uri.parse(Constants.DOWNLOAD_URL))
             .setTitle("Weather Forecast PDF")
-            .setDescription("All India Weather Forecast Bulletin")
+            .setDescription("NASA Weather Forecast PDF")
             .setAllowedOverMetered(true)
             .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"${System.currentTimeMillis()}")
-        var dm = applicationContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,"${System.currentTimeMillis()}.mp3")
+        val dm = applicationContext.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         dm.enqueue(request)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.growthpoc.di
 
+import com.example.growthpoc.views.SearchFragment
 import com.example.growthpoc.views.DownloadFragment
 import com.example.growthpoc.views.WeatherFragment
 import dagger.Module
@@ -14,4 +15,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun contributeDownloadFragment() : DownloadFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeSearchFragment() : SearchFragment
 }

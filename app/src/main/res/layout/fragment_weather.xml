@@ -1,19 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".views.WeatherFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="next"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="com.example.growthpoc.viewmodels.NetworkViewModel" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <variable
+            name="model"
+            type="com.example.growthpoc.models.response.WeatherModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background_color"
+                tools:context=".views.WeatherFragment">
+
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="@dimen/layout_250"
+                    android:layout_height="@dimen/layout_40"
+                    android:backgroundTint="@color/white"
+                    android:layout_marginStart="@dimen/margin_70"
+                    android:layout_marginTop="@dimen/margin_10"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:gravity="center"
+                    android:inputType="text"
+                    android:fontFamily="sans-serif-thin"
+                    android:hint="@string/search_by_city_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:autofillHints="@string/search_by_city_name" />
+
+                <ImageView
+                    android:id="@+id/btn_search"
+                    android:layout_width="@dimen/layout_20"
+                    android:layout_height="@dimen/layout_20"
+                    android:src="@drawable/search"
+                    android:layout_marginStart="@dimen/margin_10"
+                    app:layout_constraintStart_toEndOf="@+id/et_search"
+                    app:layout_constraintTop_toTopOf="@id/et_search"
+                    app:layout_constraintBottom_toBottomOf="@id/et_search"
+                    app:tint="@color/white"
+                    android:contentDescription="@string/search_button" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    style="@style/WeatherMainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_50"
+                    android:text="@{viewModel.isConnected() ? viewModel.myResponse.name : viewModel.name}"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/size_28"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_search" />
+
+                <TextView
+                    android:id="@+id/tv_timestamp"
+                    style="@style/WeatherMainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@{viewModel.timestamp}"
+                    android:visibility="@{viewModel.isConnected() ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+                <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="@dimen/layout_70"
+                    android:layout_height="@dimen/layout_70"
+                    android:layout_marginTop="@dimen/margin_50"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name"
+                    android:contentDescription="@string/weather_icon" />
+
+
+                <TextView
+                    android:id="@+id/tv_main"
+                    style="@style/WeatherMainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_5"
+                    android:text="@{viewModel.isConnected() ? viewModel.myResponse.weather[0].main : viewModel.main}"
+                    android:textSize="@dimen/size_20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_icon" />
+
+                <TextView
+                    android:id="@+id/tv_temp_main"
+                    style="@style/WeatherMainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_30"
+                    android:text="@{viewModel.isConnected() ? String.valueOf(Math.round(viewModel.myResponse.main.temp)).concat(@string/degree) : String.valueOf(Math.round(viewModel.temp)).concat(@string/degree)}"
+                    android:textSize="@dimen/size_60"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_main" />
+
+                <TextView
+                    android:id="@+id/tv_temp_min_max"
+                    style="@style/WeatherMainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:text="@{String.valueOf(Math.round(viewModel.myResponse.main.temp_min)) + '/' + String.valueOf(Math.round(viewModel.myResponse.main.temp_max)).concat(@string/degree)}"
+                    android:textSize="@dimen/size_18"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_temp_main" />
+
+
+                <ImageView
+                    android:id="@+id/iv_humidity"
+                    style="@style/ImageView"
+                    android:layout_marginStart="@dimen/margin_0"
+                    android:src="@drawable/humidity"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toStartOf="@id/iv_pressure"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_temp_min_max"
+                    android:contentDescription="@string/humidity_icon"/>
+
+                <ImageView
+                    android:id="@+id/iv_pressure"
+                    style="@style/ImageView"
+                    android:src="@drawable/gauge"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toStartOf="@id/iv_wind"
+                    app:layout_constraintStart_toEndOf="@id/iv_humidity"
+                    app:layout_constraintTop_toBottomOf="@id/tv_temp_min_max"
+                    android:contentDescription="@string/pressure_icon"/>
+
+                <ImageView
+                    android:id="@+id/iv_wind"
+                    style="@style/ImageView"
+                    android:src="@drawable/wind"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toStartOf="@id/iv_visibility"
+                    app:layout_constraintStart_toEndOf="@id/iv_pressure"
+                    app:layout_constraintTop_toBottomOf="@id/tv_temp_min_max"
+                    android:contentDescription="@string/wind_icon"/>
+
+                <ImageView
+                    android:id="@+id/iv_visibility"
+                    style="@style/ImageView"
+                    android:src="@drawable/visibility"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_wind"
+                    app:layout_constraintTop_toBottomOf="@id/tv_temp_min_max"
+                    android:contentDescription="@string/visibility_icon"/>
+
+                <TextView
+                    android:id="@+id/tv_humidity"
+                    style="@style/WeatherSubText"
+                    android:text="@{String.valueOf(viewModel.myResponse.main.humidity)+ @string/humidity}"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/iv_humidity"
+                    app:layout_constraintStart_toStartOf="@id/iv_humidity"
+                    app:layout_constraintTop_toBottomOf="@id/iv_humidity" />
+
+                <TextView
+                    android:id="@+id/tv_pressure"
+                    style="@style/WeatherSubText"
+                    android:text="@{String.valueOf(viewModel.myResponse.main.pressure)+ @string/pressure}"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/iv_pressure"
+                    app:layout_constraintStart_toStartOf="@id/iv_pressure"
+                    app:layout_constraintTop_toBottomOf="@id/iv_pressure" />
+
+                <TextView
+                    android:id="@+id/tv_wind"
+                    style="@style/WeatherSubText"
+                    android:text="@{String.valueOf(viewModel.myResponse.wind.speed) + @string/wind}"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/iv_wind"
+                    app:layout_constraintStart_toStartOf="@id/iv_wind"
+                    app:layout_constraintTop_toBottomOf="@id/iv_wind" />
+
+                <TextView
+                    android:id="@+id/tv_visibility"
+                    style="@style/WeatherSubText"
+                    android:text="@{String.valueOf(viewModel.myResponse.visibility) + @string/visibility}"
+                    android:visibility="@{viewModel.isConnected() ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@id/iv_visibility"
+                    app:layout_constraintStart_toEndOf="@id/tv_wind"
+                    app:layout_constraintStart_toStartOf="@id/iv_visibility"
+                    app:layout_constraintTop_toBottomOf="@id/iv_visibility" />
+
+                <ImageView
+                    android:id="@+id/btnNext"
+                    android:layout_width="@dimen/layout_40"
+                    android:layout_height="@dimen/layout_40"
+                    android:layout_marginBottom="@dimen/margin_30"
+                    android:src="@drawable/right"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:contentDescription="@string/next_button"
+                    app:tint="@color/white" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

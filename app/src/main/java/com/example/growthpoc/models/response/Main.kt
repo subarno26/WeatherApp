@@ -1,4 +1,4 @@
-package com.example.growthpoc.models
+package com.example.growthpoc.models.response
 
 
 data class Main(
@@ -6,5 +6,5 @@ data class Main(
         val pressure: Int,
         val humidity: Int,
         val temp_min: Double,
-        val temp_max: Double
+        val temp_max: Double,
 )

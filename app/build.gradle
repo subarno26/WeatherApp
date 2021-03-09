@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+    id 'androidx.navigation.safeargs.kotlin'
 
 }
 
@@ -31,7 +32,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -48,6 +52,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     // Dagger2 core
     def dagger_version = "2.22"
@@ -80,5 +85,9 @@ dependencies {
     //Workmanager
     def work_version = "2.5.0"
     implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
 }

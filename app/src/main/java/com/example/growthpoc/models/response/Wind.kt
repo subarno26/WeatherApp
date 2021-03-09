@@ -1,4 +1,4 @@
-package com.example.growthpoc.models
+package com.example.growthpoc.models.response
 
 data class Wind(
         val speed : Double,
